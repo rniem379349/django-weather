@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        - PROJECT_MODE
+    volumes:
+      - ./djangoweather:/app/
+      - static:/static
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SHELL=/bin/bash
+      - PROJECT_MODE
+      - DJANGO_SECRET_KEY
+      - ALLOWED_HOSTS
+      - DEBUG
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    tty: true
+    restart: always
+    depends_on:
+      - db
+  nginx:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - static:/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - web
+    restart: always
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    ports:
+    - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    restart: always
+  prometheus:
+    build:
+      context: ./docker/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./docker/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+  grafana:
+    build:
+      context: ./docker/grafana
+    environment:
+      - GRAFANA_ADMIN_USER
+      - GRAFANA_ADMIN_PASSWORD
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  static:
+  prometheus_data:
