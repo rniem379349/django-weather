@@ -1,0 +1,6 @@
+resources:
+  - postgres-secret.yaml
+  - postgres-service.yaml
+  - django.yaml
+  - django-secret.yaml
+  - django-svcmonitor.yaml

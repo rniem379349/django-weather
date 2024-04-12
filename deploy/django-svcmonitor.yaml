@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: django-metrics-servicemonitor
+  namespace: default
+  labels:
+    app: django
+    release: prometheus
+spec:
+  selector:
+    # match django service labels
+    matchLabels:
+      app: django
+  endpoints:
+    # target metrics endpoint with app container
+    # i.e. localhost:8000/metrics
+    - port: app
+      path: /metrics

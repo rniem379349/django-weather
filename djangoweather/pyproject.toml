@@ -13,11 +13,10 @@ dependencies = [
     "Django==5.0.2",
     "psycopg2==2.9.9",
     "gunicorn==21.2.0",
-    "Pillow",
-    "django-ckeditor",
-    "user-agents",
     "django-prometheus==2.3.1",
     "requests",
+    "django-storages",
+    "boto3",
 ]
 
 [project.optional-dependencies]

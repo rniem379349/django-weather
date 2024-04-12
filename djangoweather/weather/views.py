@@ -68,17 +68,17 @@ class WeatherDataView(TemplateView):
                 weather_data["hourly"]["time"][i].hour > 20
                 or weather_data["hourly"]["time"][i].hour < 6
             ):
-                icon = static("/weather/icons/moon.svg")
+                icon = static("weather/icons/moon.svg")
             else:
-                icon = static("/weather/icons/sun.svg")
+                icon = static("weather/icons/sun.svg")
             if weather_data["hourly"]["cloud_cover"][i] > 25:
-                icon = static("/weather/icons/cloud.svg")
+                icon = static("weather/icons/cloud.svg")
             if weather_data["hourly"]["precipitation"][i] > 0:
-                icon = static("/weather/icons/cloud-drizzle.svg")
+                icon = static("weather/icons/cloud-drizzle.svg")
                 if weather_data["hourly"]["precipitation"][i] > 2:
-                    icon = static("/weather/icons/cloud-rain.svg")
+                    icon = static("weather/icons/cloud-rain.svg")
                 if weather_data["hourly"]["temperature_2m"][i] < 0:
-                    icon = static("/weather/icons/cloud-snow.svg")
+                    icon = static("weather/icons/cloud-snow.svg")
             weather_data["hourly"]["icons"].append(icon)
 
         return weather_data
@@ -88,7 +88,7 @@ class WeatherDataView(TemplateView):
         forecast_map = {
             "supercold": """Oh boy, how are you still alive?
                 Shouldn't you be frozen like Elsa? My recommendation - GET OUT""",
-            "freezing": """Could be worse, but it's still f0ckin freezing out there.
+            "freezing": """Could be worse, but it's still freezing out there.
                 May I suggest a nice sauna?""",
             "cold": """Not really freezing, but still kind of cold -
                 so wear a nice beanie, a trendy scarf and some dang ol' mittens man""",
@@ -96,16 +96,16 @@ class WeatherDataView(TemplateView):
                 you can walk outside with a t-shirt
                 and not get sweaty just walking around. Enjoy!""",
             "hot": """It's warming up, like in a sauna - but it's outside!
-                Stay hydrated br0""",
+                Stay hydrated.""",
             "superhot": """Man, just staying in the shadow makes you sweat -
-                consider moving underground, like a cucaracha""",
+                consider moving underground, like a lizard(?)""",
             "deadlyhot": """\N{melting face} \N{melting face} \N{melting face}
                 RUN. \N{melting face} \N{melting face} \N{melting face}""",
             "no_idea": "I have no idea...",
         }
         forecast_img_map = {
-            "supercold": static("/weather/img/supercold.jpg"),
-            "freezing": static("/weather/img/freezing.jpg"),
+            "supercold": static("weather/img/supercold.jpg"),
+            "freezing": static("weather/img/freezing.jpg"),
             "cold": static("weather/img/cold.jpg"),
             "warm": static("weather/img/nice.jpg"),
             "hot": static("weather/img/hot.jpeg"),
@@ -144,7 +144,6 @@ class WeatherDataView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         weather_data = self.format_api_data(self.call_weather_api())
-        # print('formatted weather data: ', weather_data)
         context["weather_data"] = weather_data
         forecast, forecast_img = self.generate_forecast(weather_data)
         context["forecast"] = forecast

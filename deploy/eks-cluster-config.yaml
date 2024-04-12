@@ -1,0 +1,15 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: weatherapp-cluster
+  region: eu-central-1
+  version: "1.29"
+
+
+nodeGroups:
+  - name: linux-nodes
+    instanceType: t2.micro
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3

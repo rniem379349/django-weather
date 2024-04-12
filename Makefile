@@ -34,3 +34,6 @@ load-images-minikube:
 
 apply-konfig:
 	kubectl apply -k deploy/
+
+helm-install-prometheus:
+	helm install prometheus prometheus-community/kube-prometheus-stack --version "57.0.1"
